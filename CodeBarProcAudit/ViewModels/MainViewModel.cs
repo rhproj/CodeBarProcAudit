@@ -11,7 +11,7 @@ using System.Windows;
 
 namespace CodeBarProcAudit.ViewModels
 {
-    class MainViewModel //: INotifyPropertyChanged
+    class MainViewModel: INotifyPropertyChanged
     {
         //string path = $"{AppDomain.CurrentDomain.BaseDirectory}"; //\\Инвентарка
         //public string excelFile;
@@ -62,10 +62,10 @@ namespace CodeBarProcAudit.ViewModels
         //IEnumerable<string> InventoryName = await EPPlusService.LoadInventoryTable();
 
 
-        //public event PropertyChangedEventHandler PropertyChanged;
-        //private void OnPropertyChanged([CallerMemberName] string propName = null)
-        //{
-        //    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
-        //}
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void OnPropertyChanged([CallerMemberName] string propName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
+        }
     }
 }
