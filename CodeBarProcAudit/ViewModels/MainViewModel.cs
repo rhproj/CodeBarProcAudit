@@ -1,4 +1,5 @@
-﻿using CodeBarProcAudit.Services;
+﻿using CodeBarProcAudit.Model;
+using CodeBarProcAudit.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,10 +9,11 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace CodeBarProcAudit.ViewModels
 {
-    class MainViewModel: INotifyPropertyChanged
+    public class MainViewModel: INotifyPropertyChanged
     {
         //string path = $"{AppDomain.CurrentDomain.BaseDirectory}"; //\\Инвентарка
         //public string excelFile;
@@ -23,11 +25,18 @@ namespace CodeBarProcAudit.ViewModels
             set { _excelFile = value; } // OnPropertyChanged(); 
         }
 
-        private ObservableCollection<List<string>> _inventoryData;
-        public ObservableCollection<List<string>> InventoryData
+        //private ObservableCollection<List<string>> _inventoryData;
+        //public ObservableCollection<List<string>> InventoryData
+        //{
+        //    get { return _inventoryData; }
+        //    set { _inventoryData = value; OnPropertyChanged("InventoryData"); } //   
+        //}
+
+        private ObservableCollection<Item> _inventoryData;
+        public ObservableCollection<Item> InventoryData
         {
             get { return _inventoryData; }
-            set { _inventoryData = value; } // OnPropertyChanged();
+            set { _inventoryData = value; OnPropertyChanged(); } //   
         }
 
         public MainViewModel()
@@ -39,7 +48,7 @@ namespace CodeBarProcAudit.ViewModels
 
         private async Task LoadData(FileInfo table)
         {
-            InventoryData = new ObservableCollection<List<string>>(await EPPlusService.LoadInventoryTable(table));
+            InventoryData = new (await EPPlusService.LoadInventoryTable(table));
         }
 
         FileInfo GetExcelFile()

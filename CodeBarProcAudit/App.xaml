@@ -5,6 +5,6 @@
              xmlns:local="clr-namespace:CodeBarProcAudit"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <sys:String x:Key="InvFolder">\\Inventory</sys:String>
+        <sys:String x:Key="InvFolder">\Inventory</sys:String>
     </Application.Resources>
 </Application>

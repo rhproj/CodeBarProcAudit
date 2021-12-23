@@ -7,9 +7,9 @@
         xmlns:vm="clr-namespace:CodeBarProcAudit.ViewModels"
         mc:Ignorable="d"
         Title="MainWindow" Height="550" Width="800">
-    <!--<Window.DataContext>
+    <Window.DataContext>
         <vm:MainViewModel/>
-    </Window.DataContext>-->
+    </Window.DataContext>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10"/>
@@ -24,8 +24,16 @@
             <RowDefinition Height="70"/>
             <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
-        <TextBox x:Name="ExcelFile" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" FontSize="24" />
-        <DataGrid x:Name="InventoryData" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" />
+        <TextBox x:Name="ExcelFile" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" FontSize="24" Text="{Binding ExcelFile}"/>
+        <DataGrid x:Name="InventoryData" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" 
+                  AutoGenerateColumns="False" IsReadOnly="False" CanUserAddRows="False"
+                  ItemsSource="{Binding InventoryData}" >
+            <DataGrid.Columns >
+                <DataGridTextColumn Header="A" Binding="{Binding Inv}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="B" Binding="{Binding Info1}" />
+                <DataGridTextColumn Header="C" Binding="{Binding Info2}"/>
+            </DataGrid.Columns>
+        </DataGrid>
         <Button x:Name="btnLoadTable" Grid.Column="1" Grid.Row="3" Width="150" Height="60" Content="Открыть"/>
         <Button x:Name="btnGenCodeBar" Grid.Column="2" Grid.Row="3" Width="150" Height="60" Content="Сгенерировать"/>
     </Grid>
