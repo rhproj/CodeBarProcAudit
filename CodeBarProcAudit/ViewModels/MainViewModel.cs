@@ -16,6 +16,9 @@ namespace CodeBarProcAudit.ViewModels
 {
     public class MainViewModel: INotifyPropertyChanged
     {
+        string folderPath;
+        string cBarFilePath;
+
         //string path = $"{AppDomain.CurrentDomain.BaseDirectory}"; //\\Инвентарка
         //public string excelFile;
 
@@ -33,7 +36,7 @@ namespace CodeBarProcAudit.ViewModels
         //    set { _inventoryData = value; OnPropertyChanged("InventoryData"); } //   
         //}
 
-        private ObservableCollection<Item> _inventoryData;
+        private ObservableCollection<Item> _inventoryData = new();
         public ObservableCollection<Item> InventoryData
         {
             get { return _inventoryData; }
@@ -45,11 +48,19 @@ namespace CodeBarProcAudit.ViewModels
 
         public MainViewModel()
         {
-            var table = GetExcelFile();
-
-            LoadData(table);
+            SetFilePaths();
 
             GenerateCodeBarCommand = new RelayCommand(OnGenerateCodeBarExecuted, CanGenerateCodeBarExecute);
+            
+            var table = GetExcelFile(folderPath);
+
+            LoadData(table);
+        }
+
+        private void SetFilePaths()
+        {
+            folderPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + (string)App.Current.Resources["InvFolder"];
+            cBarFilePath = $"{folderPath}\\Штрихкоды.html";
         }
 
         private bool CanGenerateCodeBarExecute(object arg)
@@ -61,7 +72,8 @@ namespace CodeBarProcAudit.ViewModels
 
         private void OnGenerateCodeBarExecuted(object obj)
         {
-            throw new NotImplementedException();
+            CodeBarService.GeneratedBarcodeHtml(InventoryData, cBarFilePath);
+            MessageBox.Show("Готово!");
         }
 
         private async Task LoadData(FileInfo table)
@@ -69,9 +81,8 @@ namespace CodeBarProcAudit.ViewModels
             InventoryData = new (await EPPlusService.LoadInventoryTable(table));
         }
 
-        FileInfo GetExcelFile()
+        FileInfo GetExcelFile(string folderPath)
         {
-            string folderPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + (string)App.Current.Resources["InvFolder"];
 
             ExcelFile = Directory.EnumerateFiles(folderPath).Where(s => s.EndsWith(".xlsx") || s.EndsWith(".xls")).Select(f => f).FirstOrDefault();
 
@@ -87,7 +98,6 @@ namespace CodeBarProcAudit.ViewModels
         }
 
         //IEnumerable<string> InventoryName = await EPPlusService.LoadInventoryTable();
-
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged([CallerMemberName] string propName = null)

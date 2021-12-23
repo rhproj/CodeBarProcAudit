@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CodeBarProcAudit"
         xmlns:vm="clr-namespace:CodeBarProcAudit.ViewModels"
-        mc:Ignorable="d"
+        mc:Ignorable="d" FontSize="20"
         Title="MainWindow" Height="550" Width="800">
     <Window.DataContext>
         <vm:MainViewModel/>
@@ -21,20 +21,21 @@
             <RowDefinition Height="10"/>
             <RowDefinition Height="70"/>
             <RowDefinition/>
-            <RowDefinition Height="70"/>
+            <RowDefinition Height="90"/>
             <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
-        <TextBox x:Name="ExcelFile" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" FontSize="24" Text="{Binding ExcelFile}"/>
+        <TextBox x:Name="ExcelFile" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" 
+                 FontSize="24" VerticalAlignment="Center" Text="{Binding ExcelFile}"/>
         <DataGrid x:Name="InventoryData" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" 
                   AutoGenerateColumns="False" IsReadOnly="False" CanUserAddRows="False"
                   ItemsSource="{Binding InventoryData}" >
-            <DataGrid.Columns >
+            <DataGrid.Columns>
                 <DataGridTextColumn Header="A" Binding="{Binding Inv}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="B" Binding="{Binding Info1}" />
                 <DataGridTextColumn Header="C" Binding="{Binding Info2}"/>
             </DataGrid.Columns>
         </DataGrid>
         <Button x:Name="btnLoadTable" Grid.Column="1" Grid.Row="3" Width="150" Height="60" Content="Открыть"/>
-        <Button x:Name="btnGenCodeBar" Grid.Column="2" Grid.Row="3" Width="150" Height="60" Content="Сгенерировать" Command="{Binding}"/>
+        <Button x:Name="btnGenCodeBar" Grid.Column="2" Grid.Row="3" Width="150" Height="60" Content="Сгенерировать" Command="{Binding GenerateCodeBarCommand}"/>
     </Grid>
 </Window>

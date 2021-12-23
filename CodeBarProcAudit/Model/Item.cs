@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CodeBarProcAudit.Model
 {
-    public class Item : INotifyPropertyChanged
+    public class Item : IItem, INotifyPropertyChanged
     {
         private string _inv;
         public string Inv

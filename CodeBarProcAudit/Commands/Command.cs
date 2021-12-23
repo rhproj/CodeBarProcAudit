@@ -7,7 +7,7 @@ using System.Windows.Input;
 
 namespace CodeBarProcAudit.Commands
 {
-    internal abstract class Command : ICommand
+    internal abstract class Command : ICommand //delete this
     {
         public event EventHandler CanExecuteChanged //можно передать вызов этого события WPF:
         {//1:10:51 передаем управление этим событием классу CommandManager

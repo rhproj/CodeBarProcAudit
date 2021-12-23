@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="BarCode" Version="2021.12.21" />
     <PackageReference Include="EPPlus" Version="5.8.4" />
   </ItemGroup>
 
