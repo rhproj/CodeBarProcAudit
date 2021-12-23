@@ -1,4 +1,5 @@
-﻿using CodeBarProcAudit.Model;
+﻿using CodeBarProcAudit.Commands;
+using CodeBarProcAudit.Model;
 using CodeBarProcAudit.Services;
 using System;
 using System.Collections.Generic;
@@ -39,11 +40,28 @@ namespace CodeBarProcAudit.ViewModels
             set { _inventoryData = value; OnPropertyChanged(); } //   
         }
 
+
+        public RelayCommand GenerateCodeBarCommand { get;}
+
         public MainViewModel()
         {
             var table = GetExcelFile();
 
             LoadData(table);
+
+            GenerateCodeBarCommand = new RelayCommand(OnGenerateCodeBarExecuted, CanGenerateCodeBarExecute);
+        }
+
+        private bool CanGenerateCodeBarExecute(object arg)
+        {
+            if (InventoryData.Count > 0)
+                return true;
+            return false;
+        }
+
+        private void OnGenerateCodeBarExecuted(object obj)
+        {
+            throw new NotImplementedException();
         }
 
         private async Task LoadData(FileInfo table)
