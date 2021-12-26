@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:local="clr-namespace:CodeBarProcAudit"
-             StartupUri="MainWindow.xaml">
+             StartupUri="Views/MainWindow.xaml">
     <Application.Resources>
         <sys:String x:Key="InvFolder">\Inventory</sys:String>
     </Application.Resources>
