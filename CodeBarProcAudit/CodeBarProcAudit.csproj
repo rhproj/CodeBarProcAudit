@@ -4,11 +4,22 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>barcode64.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Img\barcode64.png" />
+    <None Remove="Img\barcode98.png" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="BarCode" Version="2021.12.21" />
     <PackageReference Include="EPPlus" Version="5.8.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Img\barcode64.png" />
+    <Resource Include="Img\barcode98.png" />
   </ItemGroup>
 
 </Project>

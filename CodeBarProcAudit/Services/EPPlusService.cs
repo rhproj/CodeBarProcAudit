@@ -24,7 +24,7 @@ namespace CodeBarProcAudit.Services
 
                 var worksheet = package.Workbook.Worksheets[PositionID: 0];
 
-                int row = 1; int col = 1;
+                int row = 2; int col = 1;
                 //читаем данные начиная с А1, пока есть данные(до конца таблицы)
                 while (string.IsNullOrWhiteSpace(worksheet.Cells[row, col].Value?.ToString()) == false) //если там есть значение - переведи ее в стринг
                 {

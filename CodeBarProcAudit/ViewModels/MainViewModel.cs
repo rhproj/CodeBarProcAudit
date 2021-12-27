@@ -73,9 +73,9 @@ namespace CodeBarProcAudit.ViewModels
 
             if (string.IsNullOrEmpty(_excelFile))
             {
-                //_excelFile = "Отсутствует инвентарная таблица";
                 MessageBox.Show("Отсутствует инвентарная таблица");
-                return null;
+
+                Environment.Exit(0);  //return null;
             }
 
             FileInfo fileInf = new FileInfo(_excelFile);

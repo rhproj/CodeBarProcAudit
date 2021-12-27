@@ -4,9 +4,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CodeBarProcAudit"
+        xmlns:cvt="clr-namespace:CodeBarProcAudit.Converters"      
         xmlns:vm="clr-namespace:CodeBarProcAudit.ViewModels"
-        mc:Ignorable="d" FontSize="20"
-        Title="FCWindow" Height="450" Width="800">
+        mc:Ignorable="d" FontSize="18"
+        Icon="/Img/barcode64.png"
+        Title="Прокуратура РТ: Инвентаризация" Height="600" Width="1050">
     <Window.DataContext>
         <vm:FilterViewModel/>
     </Window.DataContext>
@@ -14,21 +16,59 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="10"/>
             <ColumnDefinition />
+            <ColumnDefinition />
             <ColumnDefinition Width="10"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="10"/>
-            <RowDefinition Height="70"/>
+            <RowDefinition Height="80"/>
             <RowDefinition/>
-            <RowDefinition Height="90"/>
             <RowDefinition Height="10"/>
         </Grid.RowDefinitions>
-        <TextBox Name="SearchBox" Grid.Column="1" Grid.Row="1" FontSize="24" VerticalAlignment="Center"
+        <TextBox Name="SearchBox" Grid.Column="1" Grid.Row="1" Height="50" FontSize="24" VerticalAlignment="Center" VerticalContentAlignment="Center"
                  Text="{Binding FilterString, UpdateSourceTrigger=PropertyChanged}"/>
-        <DataGrid x:Name="grid" Grid.Column="1" Grid.Row="2" ItemsSource="{Binding DataGridCollection}">
-            
+        <StackPanel Grid.Column="2" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Label Content="Сгенерировать:" FontSize="24" FontWeight="SemiBold" VerticalAlignment="Center"/>
+            <Button x:Name="btnLoadTable"  Width="100" Height="60" Background="Transparent" 
+                Command="{Binding GenerateCodeBarCommand}" BorderThickness="0">
+                <Image Source="/Img/barcode98.png" Stretch="None" VerticalAlignment="Center"/>
+            </Button>
+        </StackPanel>
+        <DataGrid x:Name="grid" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" ItemsSource="{Binding DataGridCollection}" 
+                  AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False"
+                  AlternatingRowBackground="Azure">
+            <!--<DataGrid.Resources>
+                <cvt:RowNumberConverter x:Key="rowNconvert"/>
+            </DataGrid.Resources>
+            <DataGrid.RowHeaderTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Path=., 
+                        RelativeSource={RelativeSource AncestorType=DataGridRow},
+                        Converter={StaticResource rowNconvert}}"></TextBlock>
+                </DataTemplate>
+            </DataGrid.RowHeaderTemplate>
+            <DataGrid.RowHeaderStyle>
+                <Style TargetType="{x:Type DataGridRowHeader}">
+                    <Setter Property="MaxWidth" Value="30" />
+                    <Setter Property="Background" Value="WhiteSmoke"/>
+                </Style>
+            </DataGrid.RowHeaderStyle>-->
+            <DataGrid.ColumnHeaderStyle>
+                <Style TargetType="{x:Type DataGridColumnHeader}">
+                    <Setter Property="HorizontalContentAlignment" Value="Center" />
+                    <Setter Property="FontWeight" Value="Bold"/>
+                    <Setter Property="Background" Value="MediumPurple"/>
+                    <Setter Property="Foreground" Value="Azure"/>
+                    <Setter Property="Height" Value="30"/>
+                </Style>
+            </DataGrid.ColumnHeaderStyle>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Инвентарный №" Binding="{Binding Inv}" />
+                <DataGridTextColumn Header="Номенклатура" Binding="{Binding Info1}" Width="300"/>
+                <DataGridTextColumn Header="МОЛ ФИО" Binding="{Binding Info2}" Width="300"/>
+                <DataGridTextColumn Header="Подразделение" Binding="{Binding Info3}" Width="300"/>
+            </DataGrid.Columns>
         </DataGrid>
-        <Button x:Name="btnLoadTable" Grid.Column="1" Grid.Row="3" Width="150" Height="60" Content="Сгенерировать" 
-                Command="{Binding GenerateCodeBarCommand}"/>
+
     </Grid>
 </Window>
