@@ -115,7 +115,9 @@ namespace CodeBarProcAudit.ViewModels
             {
                 if (!string.IsNullOrEmpty(_filterString))
                 {
-                    return data.Inv.Contains(_filterString) || data.Info1.Contains(_filterString);
+                    return (!string.IsNullOrEmpty(data.Inv) && data.Inv.Contains(_filterString))
+                        || (!string.IsNullOrEmpty(data.Info1) && data.Info1.Contains(_filterString))
+                        || (!string.IsNullOrEmpty(data.Info2) && data.Info2.Contains(_filterString));
                 }
                 return true;
             }

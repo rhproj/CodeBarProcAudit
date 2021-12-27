@@ -8,28 +8,39 @@ using System.Threading.Tasks;
 
 namespace CodeBarProcAudit.Model
 {
-    public class Item : IItem, INotifyPropertyChanged
+    public class Item : IItem //, INotifyPropertyChanged
     {
-        private string _inv;
-        public string Inv
-        {
-            get { return _inv; }
-            set { _inv = value; OnPropertyChanged(); }
-        }
+        public string Inv { get; set; }
+        public string Info1 { get; set; }
+        public string Info2 { get; set; }
 
-        private string _info1;
-        public string Info1
-        {
-            get { return _info1; }
-            set { _info1 = value; OnPropertyChanged(); }
-        }
+        //public Item()
+        //{
+        //    Inv = string.Empty;
+        //    Info1 = string.Empty;
+        //    Info2 = string.Empty;
+        //}
 
-        private string _info2;
-        public string Info2
-        {
-            get { return _info2; }
-            set { _info2 = value; OnPropertyChanged(); }
-        }
+        //private string _inv;
+        //public string Inv
+        //{
+        //    get { return _inv; }
+        //    set { _inv = value; OnPropertyChanged(); }
+        //}
+
+        //private string _info1;
+        //public string Info1
+        //{
+        //    get { return _info1; }
+        //    set { _info1 = value; OnPropertyChanged(); }
+        //}
+
+        //private string _info2;
+        //public string Info2
+        //{
+        //    get { return _info2; }
+        //    set { _info2 = value; OnPropertyChanged(); }
+        //}
 
         //private string _info3;
         //public string Info3
@@ -73,10 +84,10 @@ namespace CodeBarProcAudit.Model
         //    set { _info8 = value; OnPropertyChanged(); }
         //}
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void OnPropertyChanged([CallerMemberName] string propName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
-        }
+        //public event PropertyChangedEventHandler PropertyChanged;
+        //private void OnPropertyChanged([CallerMemberName] string propName = null)
+        //{
+        //    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
+        //}
     }
 }
