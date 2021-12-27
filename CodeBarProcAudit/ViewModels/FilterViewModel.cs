@@ -13,32 +13,24 @@ using System.Windows.Data;
 using CodeBarProcAudit.Model;
 using OfficeOpenXml;
 using LicenseContext = OfficeOpenXml.LicenseContext;
+using System.Runtime.CompilerServices;
+using CodeBarProcAudit.Extensions;
 
 namespace CodeBarProcAudit.ViewModels
 {
-    public class FilterViewModel: INotifyPropertyChanged
+    internal class FilterViewModel: INotifyPropertyChanged
     {
-        string folderPath;
-        string cBarFilePath;
-        string excelFile;
+        private string _folderPath;
+        private string _cBarFilePath;
+        private string _excelFile;
 
-        //private ObservableCollection<Item> _inventoryData = new();
-        //public ObservableCollection<Item> InventoryData
-        //{
-        //    get { return _inventoryData; }
-        //    set { _inventoryData = value; NotifyPropertyChanged("InventoryData"); } //   
-        //}
-        public List<Item> InventoryData;
-
+        private List<Item> InventoryData;
         private ICollectionView _dataGridCollection;
         public ICollectionView DataGridCollection
         {
             get { return _dataGridCollection; }
-            set { _dataGridCollection = value; NotifyPropertyChanged("DataGridCollection"); }
+            set { _dataGridCollection = value; OnPropertyChanged(); }
         }
-
-        public List<Item> InvTestData;
-
 
         private string _filterString;
         public string FilterString
@@ -47,7 +39,7 @@ namespace CodeBarProcAudit.ViewModels
             set
             {
                 _filterString = value;
-                NotifyPropertyChanged("FilterString");
+                OnPropertyChanged();
                 FilterCollection();
             }
         }
@@ -56,7 +48,7 @@ namespace CodeBarProcAudit.ViewModels
         {
             SetFilePaths();
 
-            var table = GetExcelFile(folderPath);
+            var table = GetExcelFile(_folderPath);
 
             LoadData(table).Await(HandleError);
         }
@@ -68,7 +60,6 @@ namespace CodeBarProcAudit.ViewModels
 
         private async Task LoadData(FileInfo table)
         {
-            //InventoryData = new(await EPPlusService.LoadInventoryTable(table));
             InventoryData = await LoadInventoryTable(table);
 
             DataGridCollection = CollectionViewSource.GetDefaultView(InventoryData);
@@ -78,26 +69,25 @@ namespace CodeBarProcAudit.ViewModels
 
         private void SetFilePaths()
         {
-            folderPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + (string)App.Current.Resources["InvFolder"];
-            cBarFilePath = $"{folderPath}\\Штрихкоды.html";
+            _folderPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + (string)App.Current.Resources["InvFolder"];
+            _cBarFilePath = $"{_folderPath}\\Штрихкоды.html";
         }
 
         FileInfo GetExcelFile(string folderPath)
         {
 
-            excelFile = Directory.EnumerateFiles(folderPath).Where(s => s.EndsWith(".xlsx") || s.EndsWith(".xls")).Select(f => f).FirstOrDefault();
+            _excelFile = Directory.EnumerateFiles(folderPath).Where(s => s.EndsWith(".xlsx") || s.EndsWith(".xls")).Select(f => f).FirstOrDefault();
 
-            if (string.IsNullOrEmpty(excelFile))
+            if (string.IsNullOrEmpty(_excelFile))
             {
-                //ExcelFile = "Отсутствует инвентарная таблица";
+                //_excelFile = "Отсутствует инвентарная таблица";
                 MessageBox.Show("Отсутствует инвентарная таблица");
                 return null;
             }
 
-            FileInfo fileInf = new FileInfo(excelFile);
+            FileInfo fileInf = new FileInfo(_excelFile);
             return fileInf;
         }
-
 
         #region Filtering
         private void FilterCollection()
@@ -164,27 +154,11 @@ namespace CodeBarProcAudit.ViewModels
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-        private void NotifyPropertyChanged(string property)
+        private void OnPropertyChanged([CallerMemberName] string propName = null)
         {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(property));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
     }
 
-    public static class TaskExtensions
-    {
-        public async static void Await(this Task tsk, Action<Exception> errorCB)
-        {
-            try
-            {
-                await tsk;
-            }
-            catch (Exception ex)
-            {
-                errorCB?.Invoke(ex);
-            }
-        }
-    }
+
 }

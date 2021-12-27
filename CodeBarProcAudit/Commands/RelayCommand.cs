@@ -7,7 +7,7 @@ using System.Windows.Input;
 
 namespace CodeBarProcAudit.Commands
 {
-    public class RelayCommand : ICommand
+    internal class RelayCommand : ICommand
     {
         private readonly Action<object> _Execute;
         private readonly Func<object, bool> _CanExecute;

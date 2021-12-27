@@ -10,7 +10,7 @@ using System.Windows;
 
 namespace CodeBarProcAudit.Services
 {
-    public static class CodeBarService
+    internal static class CodeBarService
     {
         public static void GeneratedBarcodeHtml(IEnumerable<IItem> itemsCollection, string filePath)
         {

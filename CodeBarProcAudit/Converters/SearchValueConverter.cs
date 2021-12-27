@@ -7,7 +7,7 @@ using System.Windows.Data;
 
 namespace CodeBarProcAudit.Converters
 {
-    public class SearchValueConverter : IMultiValueConverter
+    internal class SearchValueConverter : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {

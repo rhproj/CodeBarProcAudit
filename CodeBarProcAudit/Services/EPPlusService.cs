@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CodeBarProcAudit.Services
 {
-    public class EPPlusService
+    internal class EPPlusService
     {
         public static async Task<IEnumerable<Item>> LoadInventoryTable(FileInfo file)
         {

@@ -1,4 +1,5 @@
 ﻿using CodeBarProcAudit.Commands;
+using CodeBarProcAudit.Extensions;
 using CodeBarProcAudit.Model;
 using CodeBarProcAudit.Services;
 using System;
@@ -14,27 +15,13 @@ using System.Windows.Controls;
 
 namespace CodeBarProcAudit.ViewModels
 {
-    public class MainViewModel: INotifyPropertyChanged
+    internal class MainViewModel: INotifyPropertyChanged
     {
-        string folderPath;
-        string cBarFilePath;
+        private string _folderPath;
+        private string _cBarFilePath;
+        private string _excelFile;
 
         //string path = $"{AppDomain.CurrentDomain.BaseDirectory}"; //\\Инвентарка
-        //public string excelFile;
-
-        private string _excelFile;
-        public string ExcelFile
-        {
-            get { return _excelFile; }
-            set { _excelFile = value; } // OnPropertyChanged(); 
-        }
-
-        //private ObservableCollection<List<string>> _inventoryData;
-        //public ObservableCollection<List<string>> InventoryData
-        //{
-        //    get { return _inventoryData; }
-        //    set { _inventoryData = value; OnPropertyChanged("InventoryData"); } //   
-        //}
 
         private ObservableCollection<Item> _inventoryData = new();
         public ObservableCollection<Item> InventoryData
@@ -42,7 +29,6 @@ namespace CodeBarProcAudit.ViewModels
             get { return _inventoryData; }
             set { _inventoryData = value; OnPropertyChanged(); } //   
         }
-
 
         public RelayCommand GenerateCodeBarCommand { get;}
 
@@ -52,15 +38,15 @@ namespace CodeBarProcAudit.ViewModels
 
             GenerateCodeBarCommand = new RelayCommand(OnGenerateCodeBarExecuted, CanGenerateCodeBarExecute);
             
-            var table = GetExcelFile(folderPath);
+            var table = GetExcelFile(_folderPath);
 
-            LoadData(table);
+            LoadData(table).Await(HandleError);
         }
 
         private void SetFilePaths()
         {
-            folderPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + (string)App.Current.Resources["InvFolder"];
-            cBarFilePath = $"{folderPath}\\Штрихкоды.html";
+            _folderPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + (string)App.Current.Resources["InvFolder"];
+            _cBarFilePath = $"{_folderPath}\\Штрихкоды.html";
         }
 
         private bool CanGenerateCodeBarExecute(object arg)
@@ -72,7 +58,7 @@ namespace CodeBarProcAudit.ViewModels
 
         private void OnGenerateCodeBarExecuted(object obj)
         {
-            CodeBarService.GeneratedBarcodeHtml(InventoryData, cBarFilePath);
+            CodeBarService.GeneratedBarcodeHtml(InventoryData, _cBarFilePath);
             MessageBox.Show("Готово!");
         }
 
@@ -84,21 +70,23 @@ namespace CodeBarProcAudit.ViewModels
         FileInfo GetExcelFile(string folderPath)
         {
 
-            ExcelFile = Directory.EnumerateFiles(folderPath).Where(s => s.EndsWith(".xlsx") || s.EndsWith(".xls")).Select(f => f).FirstOrDefault();
+            _excelFile = Directory.EnumerateFiles(folderPath).Where(s => s.EndsWith(".xlsx") || s.EndsWith(".xls")).Select(f => f).FirstOrDefault();
 
-            if (string.IsNullOrEmpty(ExcelFile))
+            if (string.IsNullOrEmpty(_excelFile))
             {
-                //ExcelFile = "Отсутствует инвентарная таблица";
+                //_excelFile = "Отсутствует инвентарная таблица";
                 MessageBox.Show("Отсутствует инвентарная таблица");
                 return null;
             }
 
-            FileInfo fileInf = new FileInfo(ExcelFile);
+            FileInfo fileInf = new FileInfo(_excelFile);
             return fileInf;
         }
 
-        //IEnumerable<string> InventoryName = await EPPlusService.LoadInventoryTable();
-
+        private void HandleError(Exception ex)
+        {
+            MessageBox.Show(ex.Message);
+        }
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged([CallerMemberName] string propName = null)
         {
