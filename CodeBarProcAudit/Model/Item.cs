@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CodeBarProcAudit.Model
+﻿namespace CodeBarProcAudit.Model
 {
     internal class Item : IItem //, INotifyPropertyChanged
     {

@@ -3,7 +3,6 @@ using CodeBarProcAudit.Extensions;
 using CodeBarProcAudit.Model;
 using CodeBarProcAudit.Services;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
@@ -11,7 +10,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace CodeBarProcAudit.ViewModels
 {
@@ -20,6 +18,7 @@ namespace CodeBarProcAudit.ViewModels
         private string _folderPath;
         private string _cBarFilePath;
         private string _excelFile;
+        public FileInfo tableFileInfo;
 
         //string path = $"{AppDomain.CurrentDomain.BaseDirectory}"; //\\Инвентарка
 
@@ -37,10 +36,10 @@ namespace CodeBarProcAudit.ViewModels
             SetFilePaths();
 
             GenerateCodeBarCommand = new RelayCommand(OnGenerateCodeBarExecuted, CanGenerateCodeBarExecute);
-            
-            var table = GetExcelFile(_folderPath);
 
-            LoadData(table).Await(HandleError);
+            tableFileInfo = GetExcelFile(_folderPath);
+
+            LoadData(tableFileInfo).Await(HandleError);
         }
 
         private void SetFilePaths()
@@ -83,12 +82,12 @@ namespace CodeBarProcAudit.ViewModels
             return fileInf;
         }
 
-        private void HandleError(Exception ex)
+        public void HandleError(Exception ex)
         {
             MessageBox.Show(ex.Message);
         }
         public event PropertyChangedEventHandler PropertyChanged;
-        private void OnPropertyChanged([CallerMemberName] string propName = null)
+        public void OnPropertyChanged([CallerMemberName] string propName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
