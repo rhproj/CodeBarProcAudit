@@ -30,7 +30,7 @@
         <StackPanel Grid.Column="2" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
             <Label Content="Сгенерировать:" FontSize="24" FontWeight="SemiBold" VerticalAlignment="Center"/>
             <Button x:Name="btnLoadTable"  Width="100" Height="60" Background="Transparent" 
-                Command="{Binding GenerateCodeBarCommand}" BorderThickness="0">
+                Command="{Binding GenerateCodeBarCommandAsync}" IsEnabled="{Binding CanGenerate}" BorderThickness="0">
                 <Image Source="/Img/barcode98.png" Stretch="None" VerticalAlignment="Center"/>
             </Button>
         </StackPanel>
@@ -69,6 +69,5 @@
                 <DataGridTextColumn Header="Подразделение" Binding="{Binding Info3}" Width="300"/>
             </DataGrid.Columns>
         </DataGrid>
-
     </Grid>
 </Window>

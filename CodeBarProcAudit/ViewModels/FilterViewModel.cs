@@ -1,4 +1,5 @@
-﻿using CodeBarProcAudit.Extensions;
+﻿using CodeBarProcAudit.Commands;
+using CodeBarProcAudit.Extensions;
 using CodeBarProcAudit.Model;
 using CodeBarProcAudit.Services;
 using System;
@@ -6,13 +7,15 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Data;
+using System.Windows.Input;
 
 namespace CodeBarProcAudit.ViewModels
 {
-    internal class FilterViewModel: MainViewModel
+    internal class FilterViewModel: BaseViewModel
     {
-        private List<Item> InventoryItems;
+        private List<Item> InventoryItems = new List<Item>();
         private ICollectionView _dataGridCollection;
         public ICollectionView DataGridCollection
         {
@@ -32,8 +35,20 @@ namespace CodeBarProcAudit.ViewModels
             }
         }
 
+        private bool _canGenerate = true;
+        public bool CanGenerate
+        {
+            get { return _canGenerate; }
+            set { _canGenerate = value; OnPropertyChanged(); }
+        }
+
+
+        public AsyncCommand GenerateCodeBarCommandAsync { get; }
+
         public FilterViewModel() : base()
         {
+            GenerateCodeBarCommandAsync = new AsyncCommand(OnGenerateCodeBarAsyncExecuted, CanGenerateCodeBarExecute);
+
             LoadData(tableFileInfo).Await(HandleError);
         }
 
@@ -43,6 +58,33 @@ namespace CodeBarProcAudit.ViewModels
 
             DataGridCollection = CollectionViewSource.GetDefaultView(InventoryItems);
             DataGridCollection.Filter = new Predicate<object>(Filter);
+        }
+
+        ///Synchronos CB generation:
+        private bool CanGenerateCodeBarExecute(object arg)
+        {
+            if (InventoryItems.Count > 0)
+                return true;
+            return false;
+        }
+
+        private async Task OnGenerateCodeBarAsyncExecuted() //object obj
+        {
+            CanGenerate = false;
+
+            if (File.Exists(_cBarFilePath))
+            {
+                File.Delete(_cBarFilePath);
+            }
+
+            Mouse.OverrideCursor = Cursors.Wait;
+            await Task.Run(() =>
+            {
+                CodeBarService.GeneratedBarcodeHtml(InventoryItems, _cBarFilePath);
+                MessageBox.Show("Штрихкоды \nсгенерированы!");
+            });
+            Mouse.OverrideCursor = null;
+            CanGenerate = true;
         }
 
         #region Filtering
