@@ -22,6 +22,8 @@ namespace CodeBarProcAudit.Views
         public FCWindow()
         {
             InitializeComponent();
+            btnMin.Click += (s, e) => WindowState = WindowState.Minimized;
+            btnMax.Click += (s, e) => WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
         }
     }
 }

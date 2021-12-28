@@ -16,6 +16,14 @@ namespace CodeBarProcAudit.ViewModels
     internal class FilterViewModel: BaseViewModel
     {
         private List<Item> InventoryItems = new List<Item>();
+        //private List<Item> _inventoryItems = new List<Item>();
+        //public List<Item> InventoryItems
+        //{
+        //    get { return _inventoryItems; }
+        //    set { _inventoryItems = value; OnPropertyChanged(); }
+        //}
+
+
         private ICollectionView _dataGridCollection;
         public ICollectionView DataGridCollection
         {
@@ -42,12 +50,15 @@ namespace CodeBarProcAudit.ViewModels
             set { _canGenerate = value; OnPropertyChanged(); }
         }
 
-
+        public AsyncCommand SaveDataAsync { get; }
         public AsyncCommand GenerateCodeBarCommandAsync { get; }
+
 
         public FilterViewModel() : base()
         {
             GenerateCodeBarCommandAsync = new AsyncCommand(OnGenerateCodeBarAsyncExecuted, CanGenerateCodeBarExecute);
+
+            SaveDataAsync = new AsyncCommand(OnSaveAsyncExecuted, CanSaveExecute);
 
             LoadData(tableFileInfo).Await(HandleError);
         }
@@ -58,6 +69,21 @@ namespace CodeBarProcAudit.ViewModels
 
             DataGridCollection = CollectionViewSource.GetDefaultView(InventoryItems);
             DataGridCollection.Filter = new Predicate<object>(Filter);
+        }
+
+
+        private bool CanSaveExecute(object arg)
+        {
+            if (InventoryItems.Count > 0)
+                return true;
+            return false;
+        }
+
+        private async Task OnSaveAsyncExecuted()
+        {
+            await EPPlusService.SaveToExcel(InventoryItems, tableFileInfo);
+
+            MessageBox.Show("Изменения сохранены!", "Инвентарная таблица", MessageBoxButton.OK ,MessageBoxImage.Exclamation);
         }
 
         ///Synchronos CB generation:

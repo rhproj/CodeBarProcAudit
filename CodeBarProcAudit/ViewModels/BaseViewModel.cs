@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CodeBarProcAudit.Commands;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -17,11 +18,20 @@ namespace CodeBarProcAudit.ViewModels
         protected string _excelFile;
         protected FileInfo tableFileInfo;
 
+        public RelayCommand Exit { get; }
+
         public BaseViewModel()
         {
             SetFilePaths();
 
+            Exit = new RelayCommand(OnExitExecute);
+
             tableFileInfo = GetExcelFile(_folderPath);
+        }
+
+        protected virtual void OnExitExecute(object obj)
+        {
+            Environment.Exit(0);
         }
 
         protected void SetFilePaths()
