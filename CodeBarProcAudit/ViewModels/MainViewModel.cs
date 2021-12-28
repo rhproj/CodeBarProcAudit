@@ -38,6 +38,7 @@ namespace CodeBarProcAudit.ViewModels
                 return true;
             return false;
         }
+
         private void OnGenerateCodeBarExecuted(object obj)
         {
             CodeBarService.GeneratedBarcodeHtml(InventoryData, _cBarFilePath);

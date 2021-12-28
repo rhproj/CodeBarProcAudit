@@ -9,7 +9,7 @@ namespace CodeBarProcAudit.Services
 {
     internal static class CodeBarService
     {
-        public static void GeneratedBarcodeHtml(IEnumerable<IItem> itemsCollection, string filePath)
+        public static void GeneratedBarcodeHtml(IEnumerable<Item> itemsCollection, string filePath)
         {
             List<string> barTags = new List<string>();
 
@@ -20,6 +20,7 @@ namespace CodeBarProcAudit.Services
                     if (item != null && !string.IsNullOrEmpty(item.Inv))
                     {
                         var barCode = IronBarCode.BarcodeWriter.CreateBarcode(item.Inv, BarcodeEncoding.Code128).ResizeTo(50, 50).SetMargins(10);
+                        barCode.AddAnnotationTextAboveBarcode(item.Info1);
                         barCode.AddBarcodeValueTextBelowBarcode();
                         var bc = barCode.ToHtmlTag();
 
