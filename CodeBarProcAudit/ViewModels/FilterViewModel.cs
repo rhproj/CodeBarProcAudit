@@ -23,7 +23,6 @@ namespace CodeBarProcAudit.ViewModels
         //    set { _inventoryItems = value; OnPropertyChanged(); }
         //}
 
-
         private ICollectionView _dataGridCollection;
         public ICollectionView DataGridCollection
         {
@@ -71,7 +70,6 @@ namespace CodeBarProcAudit.ViewModels
             DataGridCollection.Filter = new Predicate<object>(Filter);
         }
 
-
         private bool CanSaveExecute(object arg)
         {
             if (InventoryItems.Count > 0)
@@ -111,6 +109,14 @@ namespace CodeBarProcAudit.ViewModels
             });
             Mouse.OverrideCursor = null;
             CanGenerate = true;
+        }
+
+        protected override void OnExitExecute(object obj)
+        {
+            Task.Run(async ()=> {
+                await EPPlusService.SaveToExcel(InventoryItems, tableFileInfo);
+                Environment.Exit(0);
+            });
         }
 
         #region Filtering
