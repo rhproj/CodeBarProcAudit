@@ -1,22 +1,18 @@
 ﻿using CodeBarProcAudit.Commands;
+using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace CodeBarProcAudit.ViewModels
 {
     internal abstract class BaseViewModel : INotifyPropertyChanged
     {
-        protected string _folderPath;
         protected string _cBarFilePath;
         protected string _excelFile;
-        protected FileInfo tableFileInfo;
 
         public RelayCommand Exit { get; }
 
@@ -25,8 +21,6 @@ namespace CodeBarProcAudit.ViewModels
             SetFilePaths();
 
             Exit = new RelayCommand(OnExitExecute);
-
-            tableFileInfo = GetExcelFile(_folderPath);
         }
 
         protected virtual void OnExitExecute(object obj)
@@ -36,8 +30,24 @@ namespace CodeBarProcAudit.ViewModels
 
         protected void SetFilePaths()
         {
-            _folderPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + (string)App.Current.Resources["InvFolder"];
+            string _folderPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + (string)App.Current.Resources["InvFolder"];
             _cBarFilePath = $"{_folderPath}\\Штрихкоды.html";
+
+            _excelFile = SetExcelFile(_folderPath);
+        }
+
+        string SetExcelFile(string folderPath)
+        {
+            _excelFile = Directory.EnumerateFiles(folderPath).Where(s => s.EndsWith(".xlsx") || s.EndsWith(".xls")).Select(f => f).FirstOrDefault();
+
+            if (string.IsNullOrEmpty(_excelFile))
+            {
+                MessageBox.Show("Отсутствует инвентарная таблица");
+
+                Environment.Exit(0);  //return null;
+            }
+
+            return _excelFile;
         }
 
         FileInfo GetExcelFile(string folderPath)
@@ -53,6 +63,23 @@ namespace CodeBarProcAudit.ViewModels
 
             FileInfo fileInf = new FileInfo(_excelFile);
             return fileInf;
+        }
+
+        protected string SelectFile()
+        {
+            string path = _excelFile;
+            OpenFileDialog dlg = new OpenFileDialog();
+
+            dlg.DefaultExt = ".xlsx";
+            dlg.Filter = "Файлы Таблиц(*.xlsx)|*.xlsx|XLS файлы (*.xls)|*.xls|CSV Файлы (*.csv)|*.csv";
+
+            Nullable<bool> result = dlg.ShowDialog(); // Display OpenFileDialog by calling ShowDialog method 
+
+            if (result == true)
+            {
+                path = dlg.FileName;
+            }          
+            return path;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

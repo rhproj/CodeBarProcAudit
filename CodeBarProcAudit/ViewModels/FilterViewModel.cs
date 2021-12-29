@@ -16,12 +16,6 @@ namespace CodeBarProcAudit.ViewModels
     internal class FilterViewModel: BaseViewModel
     {
         private List<Item> InventoryItems = new List<Item>();
-        //private List<Item> _inventoryItems = new List<Item>();
-        //public List<Item> InventoryItems
-        //{
-        //    get { return _inventoryItems; }
-        //    set { _inventoryItems = value; OnPropertyChanged(); }
-        //}
 
         private ICollectionView _dataGridCollection;
         public ICollectionView DataGridCollection
@@ -49,17 +43,19 @@ namespace CodeBarProcAudit.ViewModels
             set { _canGenerate = value; OnPropertyChanged(); }
         }
 
+        public AsyncCommand LoadDataAsync { get; }
         public AsyncCommand SaveDataAsync { get; }
         public AsyncCommand GenerateCodeBarCommandAsync { get; }
-
 
         public FilterViewModel() : base()
         {
             GenerateCodeBarCommandAsync = new AsyncCommand(OnGenerateCodeBarAsyncExecuted, CanGenerateCodeBarExecute);
 
+            LoadDataAsync = new AsyncCommand(OnLoadAsyncExecuted);
             SaveDataAsync = new AsyncCommand(OnSaveAsyncExecuted, CanSaveExecute);
 
-            LoadData(tableFileInfo).Await(HandleError);
+            FileInfo fI = new FileInfo(_excelFile);
+            LoadData(fI).Await(HandleError);
         }
 
         private async Task LoadData(FileInfo table)
@@ -77,11 +73,22 @@ namespace CodeBarProcAudit.ViewModels
             return false;
         }
 
+        private async Task OnLoadAsyncExecuted()
+        {
+            _excelFile = SelectFile();
+
+            FileInfo fI = new FileInfo(_excelFile); 
+
+            await LoadData(fI);
+        }
+
         private async Task OnSaveAsyncExecuted()
         {
-            await EPPlusService.SaveToExcel(InventoryItems, tableFileInfo);
+            FileInfo fI = new FileInfo(_excelFile);
 
-            MessageBox.Show("Изменения сохранены!", "Инвентарная таблица", MessageBoxButton.OK ,MessageBoxImage.Exclamation);
+            await EPPlusService.SaveToExcel(InventoryItems, fI);
+
+            MessageBox.Show($"Изменения сохранены!\nв инвентарную таблицу\n{_excelFile}", "Инвентарная таблица", MessageBoxButton.OK ,MessageBoxImage.Exclamation);
         }
 
         ///Synchronos CB generation:
@@ -92,7 +99,7 @@ namespace CodeBarProcAudit.ViewModels
             return false;
         }
 
-        private async Task OnGenerateCodeBarAsyncExecuted() //object obj
+        private async Task OnGenerateCodeBarAsyncExecuted()
         {
             CanGenerate = false;
 
@@ -113,8 +120,10 @@ namespace CodeBarProcAudit.ViewModels
 
         protected override void OnExitExecute(object obj)
         {
+            FileInfo fI = new FileInfo(_excelFile);
+
             Task.Run(async ()=> {
-                await EPPlusService.SaveToExcel(InventoryItems, tableFileInfo);
+                await EPPlusService.SaveToExcel(InventoryItems, fI);
                 Environment.Exit(0);
             });
         }

@@ -2,15 +2,10 @@
 using CodeBarProcAudit.Extensions;
 using CodeBarProcAudit.Model;
 using CodeBarProcAudit.Services;
-using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.IO;
-using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Input;
 
 namespace CodeBarProcAudit.ViewModels
 {
@@ -28,7 +23,9 @@ namespace CodeBarProcAudit.ViewModels
         public MainViewModel() : base()
         {
             GenerateCodeBarCommand = new RelayCommand(OnGenerateCodeBarExecuted, CanGenerateCodeBarExecute);
-            LoadData(tableFileInfo).Await(HandleError);
+
+            FileInfo fI = new FileInfo(_excelFile);
+            LoadData(fI).Await(HandleError);  
         }
 
         ///Synchronos CB generation:
