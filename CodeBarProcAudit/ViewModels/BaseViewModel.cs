@@ -44,7 +44,7 @@ namespace CodeBarProcAudit.ViewModels
             {
                 MessageBox.Show("Отсутствует инвентарная таблица");
 
-                Environment.Exit(0);  //return null;
+                Environment.Exit(0);
             }
 
             return _excelFile;
@@ -58,7 +58,7 @@ namespace CodeBarProcAudit.ViewModels
             {
                 MessageBox.Show("Отсутствует инвентарная таблица");
 
-                Environment.Exit(0);  //return null;
+                Environment.Exit(0);
             }
 
             FileInfo fileInf = new FileInfo(_excelFile);
@@ -73,7 +73,7 @@ namespace CodeBarProcAudit.ViewModels
             dlg.DefaultExt = ".xlsx";
             dlg.Filter = "Файлы Таблиц(*.xlsx)|*.xlsx|XLS файлы (*.xls)|*.xls|CSV Файлы (*.csv)|*.csv";
 
-            Nullable<bool> result = dlg.ShowDialog(); // Display OpenFileDialog by calling ShowDialog method 
+            Nullable<bool> result = dlg.ShowDialog();
 
             if (result == true)
             {

@@ -15,7 +15,7 @@ namespace CodeBarProcAudit.ViewModels
         public ObservableCollection<Item> InventoryData
         {
             get { return _inventoryData; }
-            set { _inventoryData = value; OnPropertyChanged(); } //   
+            set { _inventoryData = value; OnPropertyChanged(); } 
         }
 
         public RelayCommand GenerateCodeBarCommand { get;}
