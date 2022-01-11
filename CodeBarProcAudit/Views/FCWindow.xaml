@@ -99,7 +99,7 @@
                 <DataGridTextColumn Header="Номенклатура" Binding="{Binding Info1}" Width="300" IsReadOnly="False"/>
                 <DataGridTextColumn Header="МОЛ ФИО" Binding="{Binding Info2}" Width="250" IsReadOnly="False"/>
                 <DataGridTextColumn Header="Подразделение" Binding="{Binding Info3}" Width="300" IsReadOnly="False"/>
-                <DataGridTextColumn Header="Комментарий" Binding="{Binding Estim}" Width="300" IsReadOnly="False"/>
+                <DataGridTextColumn Header="Примечание" Binding="{Binding Estim}" Width="300" IsReadOnly="False"/>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>
