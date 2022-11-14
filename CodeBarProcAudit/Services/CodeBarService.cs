@@ -15,7 +15,7 @@ namespace CodeBarProcAudit.Services
 
             if (itemsCollection != null && itemsCollection.Count() > 0)
             {
-                foreach (var item in itemsCollection.Skip(1))
+                foreach (var item in itemsCollection)
                 {
                     if (item != null && !string.IsNullOrEmpty(item.Inv))
                     {

@@ -50,17 +50,20 @@ namespace CodeBarProcAudit.Services
         {
             using (var package = new ExcelPackage(file))
             {
-                var worksheet = package.Workbook.Worksheets[0];//package.Workbook.Worksheets.Add("Инвентар");
+                if (package !=null)
+                {
+                    var worksheet = package.Workbook.Worksheets[0];//package.Workbook.Worksheets.Add("Инвентар");
 
-                var range = worksheet.Cells["A2"].LoadFromCollection(data, false);
+                    var range = worksheet.Cells["A2"].LoadFromCollection(data, false);
 
-                range.AutoFitColumns();
+                    range.AutoFitColumns();
 
-                //worksheet.Row(1).Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
-                //worksheet.Row(1).Style.Font.Size = 20;
-                //worksheet.Row(1).Style.Font.Bold = true;
+                    //worksheet.Row(1).Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
+                    //worksheet.Row(1).Style.Font.Size = 20;
+                    //worksheet.Row(1).Style.Font.Bold = true;
 
-                await package.SaveAsync();
+                    await package.SaveAsync();
+                }
             }
         }
     }
