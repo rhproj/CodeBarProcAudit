@@ -146,7 +146,9 @@ namespace CodeBarProcAudit.ViewModels
                 {
                     return (!string.IsNullOrEmpty(data.Inv) && data.Inv.Contains(_filterString))
                         || (!string.IsNullOrEmpty(data.Info1) && data.Info1.Contains(_filterString))
-                        || (!string.IsNullOrEmpty(data.Info2) && data.Info2.Contains(_filterString));
+                        || (!string.IsNullOrEmpty(data.Info2) && data.Info2.Contains(_filterString))
+                        || (!string.IsNullOrEmpty(data.FIO) && data.FIO.Contains(_filterString))
+                        || (!string.IsNullOrEmpty(data.Room) && data.Room.Contains(_filterString));
                 }
                 return true;
             }
