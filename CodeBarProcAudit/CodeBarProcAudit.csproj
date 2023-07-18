@@ -10,6 +10,7 @@
   <ItemGroup>
     <None Remove="Img\barcode64.png" />
     <None Remove="Img\barcode98.png" />
+    <None Remove="Img\broom48.png" />
     <None Remove="Img\openXLS.png" />
     <None Remove="Img\save64.png" />
   </ItemGroup>
@@ -22,6 +23,7 @@
   <ItemGroup>
     <Resource Include="Img\barcode64.png" />
     <Resource Include="Img\barcode98.png" />
+    <Resource Include="Img\broom48.png" />
     <Resource Include="Img\openXLS.png" />
     <Resource Include="Img\save64.png" />
   </ItemGroup>

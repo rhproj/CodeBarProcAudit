@@ -24,6 +24,8 @@ namespace CodeBarProcAudit.Views
             InitializeComponent();
             btnMin.Click += (s, e) => WindowState = WindowState.Minimized;
             btnMax.Click += (s, e) => WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
+
+            btnClear.Click += (s, e) => { SearchBox.Text = String.Empty; };
         }
     }
 }

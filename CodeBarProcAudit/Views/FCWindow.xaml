@@ -44,11 +44,14 @@
                 <ColumnDefinition />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="20,0">
-                <Button Background="Transparent" Margin="0,10" Command="{Binding LoadDataAsync}">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="5,0">
+				<Button x:Name="btnClear" Background="Transparent" Margin="0,10,30,10" Width="64">
+                    <Image Source="/Img/broom48.png" Stretch="Fill" Margin="5" VerticalAlignment="Center"/>
+                </Button>
+				<Button Background="Transparent" Margin="10,10" Command="{Binding LoadDataAsync}">
                     <Image Source="/Img/openXLS.png" Stretch="Fill" Margin="5" VerticalAlignment="Center"/>
                 </Button>
-                <Button Background="Transparent" Margin="20,10" Command="{Binding SaveDataAsync}">
+                <Button Background="Transparent" Margin="10,10" Command="{Binding SaveDataAsync}">
                     <Image Source="/Img/save64.png" Stretch="Fill" Margin="5" VerticalAlignment="Center"/>
                 </Button>
             </StackPanel>
