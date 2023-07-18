@@ -1,6 +1,6 @@
 ﻿namespace CodeBarProcAudit.Model
 {
-    internal class Item : IItem
+    public class Item : IItem
     {
         public string Inv { get; set; }
         public string FIO { get; set; }

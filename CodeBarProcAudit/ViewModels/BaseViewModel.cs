@@ -1,4 +1,5 @@
 ﻿using CodeBarProcAudit.Commands;
+using CodeBarProcAudit.Services;
 using Microsoft.Win32;
 using System;
 using System.ComponentModel;
@@ -9,15 +10,21 @@ using System.Windows;
 
 namespace CodeBarProcAudit.ViewModels
 {
-    internal abstract class BaseViewModel : INotifyPropertyChanged
+    public abstract class BaseViewModel : INotifyPropertyChanged
     {
+        protected ICodeBarService _codeBarService;
+        protected IExcelService _excelService;
+
         protected string _codeBarFilePath;
         protected string _excelFile;
 
         public RelayCommand ExitCommand { get; }
 
-        public BaseViewModel()
+        public BaseViewModel(ICodeBarService codeBarService, IExcelService excelService)
         {
+            _codeBarService = codeBarService;
+            _excelService = excelService;
+
             SetFilePaths();
             ExitCommand = new RelayCommand(OnExitExecute);
         }

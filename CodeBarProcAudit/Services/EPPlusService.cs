@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace CodeBarProcAudit.Services
 {
-    internal class EPPlusService
+    public class EPPlusService : IExcelService
     {
-        public static async Task<IEnumerable<Item>> LoadInventoryTable(FileInfo file)
+        public async Task<IEnumerable<Item>> LoadInventoryTable(FileInfo file)
         {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
@@ -35,7 +35,7 @@ namespace CodeBarProcAudit.Services
 
                     foreach (var pi in propInfo)
                     {
-                        pi.SetValue(item,worksheet.Cells[row, col++].Value,null);
+                        pi.SetValue(item, worksheet.Cells[row, col++].Value, null);
                     }
 
                     output.Add(item);
@@ -46,13 +46,13 @@ namespace CodeBarProcAudit.Services
             return output;
         }
 
-        public static async Task SaveToExcel(IEnumerable<Item> data, FileInfo file)
+        public async Task SaveToExcel(IEnumerable<Item> data, FileInfo file)
         {
             using (var package = new ExcelPackage(file))
             {
-                if (package !=null)
+                if (package != null)
                 {
-                    var worksheet = package.Workbook.Worksheets[0];//package.Workbook.Worksheets.Add("Инвентар");
+                    var worksheet = package.Workbook.Worksheets[0];
 
                     var range = worksheet.Cells["A2"].LoadFromCollection(data, false);
                     range.AutoFitColumns();

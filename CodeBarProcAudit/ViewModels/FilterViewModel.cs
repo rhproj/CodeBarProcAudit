@@ -13,9 +13,8 @@ using System.Windows.Input;
 
 namespace CodeBarProcAudit.ViewModels
 {
-    internal class FilterViewModel: BaseViewModel
+    public class FilterViewModel: BaseViewModel
     {
-        private CodeBarService _codeBarService = new CodeBarService();
         private List<Item> InventoryItems = new List<Item>();
 
         private ICollectionView _dataGridCollection;
@@ -52,7 +51,7 @@ namespace CodeBarProcAudit.ViewModels
         public AsyncCommand SaveDataAsync { get; }
         public AsyncCommand GenerateCodeBarCommandAsync { get; }
 
-        public FilterViewModel() : base()
+        public FilterViewModel(ICodeBarService codeBarService, IExcelService excelService) : base(codeBarService, excelService)
         {
             GenerateCodeBarCommandAsync = new AsyncCommand(OnGenerateCodeBarAsyncExecuted, CanGenerateCodeBarExecute);
 
@@ -65,7 +64,7 @@ namespace CodeBarProcAudit.ViewModels
 
         private async Task LoadData(FileInfo table)
         {
-            InventoryItems = new(await EPPlusService.LoadInventoryTable(table));
+            InventoryItems = new(await _excelService.LoadInventoryTable(table));
 
             DataGridCollection = CollectionViewSource.GetDefaultView(InventoryItems);
             DataGridCollection.Filter = new Predicate<object>(Filter);
@@ -88,7 +87,7 @@ namespace CodeBarProcAudit.ViewModels
         private async Task OnSaveAsyncExecuted()
         {
             FileInfo fI = new FileInfo(_excelFile);
-            await EPPlusService.SaveToExcel(InventoryItems, fI);
+            await _excelService.SaveToExcel(InventoryItems, fI);
 
             MessageBox.Show($"Изменения сохранены!\nв инвентарную таблицу\n{_excelFile}", "Инвентарная таблица", MessageBoxButton.OK ,MessageBoxImage.Exclamation);
         }
@@ -124,7 +123,7 @@ namespace CodeBarProcAudit.ViewModels
             FileInfo fI = new FileInfo(_excelFile);
 
             Task.Run(async ()=> {
-                await EPPlusService.SaveToExcel(InventoryItems, fI);
+                await _excelService.SaveToExcel(InventoryItems, fI);
                 Environment.Exit(0);
             });
         }

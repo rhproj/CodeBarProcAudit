@@ -4,7 +4,7 @@ using System.Windows.Input;
 
 namespace CodeBarProcAudit.Commands
 {
-    internal class AsyncCommand : ICommand
+    public class AsyncCommand : ICommand
     {
         private readonly Func<Task> _execute;
         private readonly Func<object, bool> _canExecute;

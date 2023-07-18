@@ -7,7 +7,7 @@ using System.Windows;
 
 namespace CodeBarProcAudit.Services
 {
-    internal class CodeBarService
+    public class CodeBarService : ICodeBarService
     {
         public void GeneratedBarcodeHtml(IEnumerable<Item> itemsCollection, string filePath)
         {

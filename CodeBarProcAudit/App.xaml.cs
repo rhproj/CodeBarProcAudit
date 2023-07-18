@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using CodeBarProcAudit.Setups;
+using CodeBarProcAudit.Views;
 using System.Windows;
 
 namespace CodeBarProcAudit
@@ -13,5 +9,13 @@ namespace CodeBarProcAudit
     /// </summary>
     public partial class App : Application
     {
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+            var viewModel = ViewModelServiceSetter.SetUpViewModel();
+
+            Application.Current.MainWindow = new FCWindow(viewModel);
+            Application.Current.MainWindow.Show();
+        }
     }
 }
