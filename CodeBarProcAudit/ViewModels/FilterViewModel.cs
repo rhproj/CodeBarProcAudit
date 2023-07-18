@@ -15,6 +15,7 @@ namespace CodeBarProcAudit.ViewModels
 {
     internal class FilterViewModel: BaseViewModel
     {
+        private CodeBarService _codeBarService = new CodeBarService();
         private List<Item> InventoryItems = new List<Item>();
 
         private ICollectionView _dataGridCollection;
@@ -40,7 +41,11 @@ namespace CodeBarProcAudit.ViewModels
         public bool CanGenerate
         {
             get { return _canGenerate; }
-            set { _canGenerate = value; OnPropertyChanged(); }
+            set 
+            { 
+                _canGenerate = value; 
+                OnPropertyChanged(); 
+            }
         }
 
         public AsyncCommand LoadDataAsync { get; }
@@ -76,22 +81,18 @@ namespace CodeBarProcAudit.ViewModels
         private async Task OnLoadAsyncExecuted()
         {
             _excelFile = SelectFile();
-
             FileInfo fI = new FileInfo(_excelFile); 
-
             await LoadData(fI);
         }
 
         private async Task OnSaveAsyncExecuted()
         {
             FileInfo fI = new FileInfo(_excelFile);
-
             await EPPlusService.SaveToExcel(InventoryItems, fI);
 
             MessageBox.Show($"Изменения сохранены!\nв инвентарную таблицу\n{_excelFile}", "Инвентарная таблица", MessageBoxButton.OK ,MessageBoxImage.Exclamation);
         }
 
-        ///Synchronos CB generation:
         private bool CanGenerateCodeBarExecute(object arg)
         {
             if (InventoryItems.Count > 0)
@@ -103,15 +104,15 @@ namespace CodeBarProcAudit.ViewModels
         {
             CanGenerate = false;
 
-            if (File.Exists(_cBarFilePath))
+            if (File.Exists(_codeBarFilePath))
             {
-                File.Delete(_cBarFilePath);
+                File.Delete(_codeBarFilePath);
             }
 
             Mouse.OverrideCursor = Cursors.Wait;
             await Task.Run(() =>
             {
-                CodeBarService.GeneratedBarcodeHtml(InventoryItems, _cBarFilePath);
+                _codeBarService.GeneratedBarcodeHtml(InventoryItems, _codeBarFilePath);
                 MessageBox.Show("Штрихкоды \nсгенерированы!");
             });
             Mouse.OverrideCursor = null;

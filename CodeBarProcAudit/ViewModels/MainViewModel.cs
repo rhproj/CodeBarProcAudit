@@ -28,7 +28,6 @@ namespace CodeBarProcAudit.ViewModels
             LoadData(fI).Await(HandleError);  
         }
 
-        ///Synchronos CB generation:
         private bool CanGenerateCodeBarExecute(object arg)
         {
             if (InventoryData.Count > 0)
@@ -38,7 +37,7 @@ namespace CodeBarProcAudit.ViewModels
 
         private void OnGenerateCodeBarExecuted(object obj)
         {
-            CodeBarService.GeneratedBarcodeHtml(InventoryData, _cBarFilePath);
+            CodeBarService.GeneratedBarcodeHtml(InventoryData, _codeBarFilePath);
             MessageBox.Show("Готово!");
         }
 

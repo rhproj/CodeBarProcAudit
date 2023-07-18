@@ -11,16 +11,15 @@ namespace CodeBarProcAudit.ViewModels
 {
     internal abstract class BaseViewModel : INotifyPropertyChanged
     {
-        protected string _cBarFilePath;
+        protected string _codeBarFilePath;
         protected string _excelFile;
 
-        public RelayCommand Exit { get; }
+        public RelayCommand ExitCommand { get; }
 
         public BaseViewModel()
         {
             SetFilePaths();
-
-            Exit = new RelayCommand(OnExitExecute);
+            ExitCommand = new RelayCommand(OnExitExecute);
         }
 
         protected virtual void OnExitExecute(object obj)
@@ -28,41 +27,27 @@ namespace CodeBarProcAudit.ViewModels
             Environment.Exit(0);
         }
 
-        protected void SetFilePaths()
+        private void SetFilePaths()
         {
             string _folderPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + (string)App.Current.Resources["InvFolder"];
-            _cBarFilePath = $"{_folderPath}\\Штрихкоды.html";
+            _codeBarFilePath = $"{_folderPath}\\Штрихкоды.html";
 
             _excelFile = SetExcelFile(_folderPath);
         }
 
-        string SetExcelFile(string folderPath)
+        private string SetExcelFile(string folderPath)
         {
-            _excelFile = Directory.EnumerateFiles(folderPath).Where(s => s.EndsWith(".xlsx") || s.EndsWith(".xls")).Select(f => f).FirstOrDefault();
+            _excelFile = Directory.EnumerateFiles(folderPath)
+                .Where(s => s.EndsWith(".xlsx") || s.EndsWith(".xls"))
+                .Select(f => f).FirstOrDefault();
 
             if (string.IsNullOrEmpty(_excelFile))
             {
                 MessageBox.Show("Отсутствует инвентарная таблица");
-
                 Environment.Exit(0);
             }
 
             return _excelFile;
-        }
-
-        FileInfo GetExcelFile(string folderPath)
-        {
-            _excelFile = Directory.EnumerateFiles(folderPath).Where(s => s.EndsWith(".xlsx") || s.EndsWith(".xls")).Select(f => f).FirstOrDefault();
-
-            if (string.IsNullOrEmpty(_excelFile))
-            {
-                MessageBox.Show("Отсутствует инвентарная таблица");
-
-                Environment.Exit(0);
-            }
-
-            FileInfo fileInf = new FileInfo(_excelFile);
-            return fileInf;
         }
 
         protected string SelectFile()
@@ -73,7 +58,7 @@ namespace CodeBarProcAudit.ViewModels
             dlg.DefaultExt = ".xlsx";
             dlg.Filter = "Файлы Таблиц(*.xlsx)|*.xlsx|XLS файлы (*.xls)|*.xls|CSV Файлы (*.csv)|*.csv";
 
-            Nullable<bool> result = dlg.ShowDialog();
+            bool? result = dlg.ShowDialog();
 
             if (result == true)
             {

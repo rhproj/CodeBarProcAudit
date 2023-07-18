@@ -26,14 +26,14 @@ namespace CodeBarProcAudit.Services
 
                 int row = 2; int col = 1;
                 //читаем данные начиная с А1, пока есть данные(до конца таблицы)
-                while (string.IsNullOrWhiteSpace(worksheet.Cells[row, col].Value?.ToString()) == false) //если там есть значение - переведи ее в стринг
+                while (string.IsNullOrWhiteSpace(worksheet.Cells[row, col].Value?.ToString()) == false)
                 {
                     Item item = new();
 
                     Type myType = item.GetType();
-                    var pinfo = myType.GetProperties();
+                    var propInfo = myType.GetProperties();
 
-                    foreach (var pi in pinfo)
+                    foreach (var pi in propInfo)
                     {
                         pi.SetValue(item,worksheet.Cells[row, col++].Value,null);
                     }
@@ -55,12 +55,7 @@ namespace CodeBarProcAudit.Services
                     var worksheet = package.Workbook.Worksheets[0];//package.Workbook.Worksheets.Add("Инвентар");
 
                     var range = worksheet.Cells["A2"].LoadFromCollection(data, false);
-
                     range.AutoFitColumns();
-
-                    //worksheet.Row(1).Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.Center;
-                    //worksheet.Row(1).Style.Font.Size = 20;
-                    //worksheet.Row(1).Style.Font.Bold = true;
 
                     await package.SaveAsync();
                 }

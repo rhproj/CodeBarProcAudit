@@ -6,20 +6,20 @@ namespace CodeBarProcAudit.Commands
 {
     internal class AsyncCommand : ICommand
     {
-        private readonly Func<Task> _Execute;
-        private readonly Func<object, bool> _CanExecute;
+        private readonly Func<Task> _execute;
+        private readonly Func<object, bool> _canExecute;
 
         public AsyncCommand(Func<Task> Execute, Func<object, bool> CanExecute = null)
         {
-            _Execute = Execute ?? throw new ArgumentNullException(nameof(Execute));
-            _CanExecute = CanExecute;
+            _execute = Execute ?? throw new ArgumentNullException(nameof(Execute));
+            _canExecute = CanExecute;
         }
 
-        public bool CanExecute(object parameter) => _CanExecute?.Invoke(parameter) ?? true;
+        public bool CanExecute(object parameter) => _canExecute?.Invoke(parameter) ?? true;
 
-        public async void Execute(object parameter) => await ExecuteAsync(parameter); //gotta be void to keep ICommand interface implementation
+        public async void Execute(object parameter) => await ExecuteAsync(parameter);
 
-        public async Task ExecuteAsync(object parameter) => await _Execute();
+        public async Task ExecuteAsync(object parameter) => await _execute();
 
         public event EventHandler CanExecuteChanged
         {

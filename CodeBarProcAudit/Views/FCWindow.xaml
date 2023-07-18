@@ -30,12 +30,12 @@
         </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Left">
             <Image Source="/Img/barcode64.png"/>
-            <Label  Content="Прокуратура РТ: Инвентаризация" HorizontalContentAlignment="Center" FontWeight="Bold"/>
+            <Label  Content="Аппарат РТ: Инвентаризация" HorizontalContentAlignment="Center" FontWeight="Bold"/>
         </StackPanel>
         <StackPanel Grid.Column="2" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="0,2,0,0" VerticalAlignment="Top" HorizontalAlignment="Right" WindowChrome.IsHitTestVisibleInChrome="True">
             <Button x:Name="btnMin"  Width="20" Margin="5,0" Background="Transparent" Content="__"  BorderThickness="0"/>
             <Button x:Name="btnMax"  Width="20" Margin="5,0" Background="Transparent"  Content="o"  BorderThickness="0"/>
-            <Button x:Name="btnClose"  Width="20" Margin="5,0,6,0" Background="Transparent"  Content="x"  BorderThickness="0" Command="{Binding Exit}"/>
+            <Button x:Name="btnClose"  Width="20" Margin="5,0,6,0" Background="Transparent"  Content="x"  BorderThickness="0" Command="{Binding ExitCommand}"/>
         </StackPanel>
         <TextBox Name="SearchBox" Grid.Column="1" Grid.Row="1" Height="50" FontSize="24" VerticalAlignment="Center" VerticalContentAlignment="Center"
                  Text="{Binding FilterString, UpdateSourceTrigger=PropertyChanged}"/>
@@ -70,22 +70,7 @@
         <DataGrid x:Name="grid" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" ItemsSource="{Binding DataGridCollection}" 
                   AutoGenerateColumns="False" CanUserAddRows="False"
                   AlternatingRowBackground="Azure">
-            <!--<DataGrid.Resources>
-                <cvt:RowNumberConverter x:Key="rowNconvert"/>
-            </DataGrid.Resources>
-            <DataGrid.RowHeaderTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding Path=., 
-                        RelativeSource={RelativeSource AncestorType=DataGridRow},
-                        Converter={StaticResource rowNconvert}}"></TextBlock>
-                </DataTemplate>
-            </DataGrid.RowHeaderTemplate>
-            <DataGrid.RowHeaderStyle>
-                <Style TargetType="{x:Type DataGridRowHeader}">
-                    <Setter Property="MaxWidth" Value="30" />
-                    <Setter Property="Background" Value="WhiteSmoke"/>
-                </Style>
-            </DataGrid.RowHeaderStyle>-->
+
             <DataGrid.ColumnHeaderStyle>
                 <Style TargetType="{x:Type DataGridColumnHeader}">
                     <Setter Property="HorizontalContentAlignment" Value="Center" />

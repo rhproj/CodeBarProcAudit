@@ -7,38 +7,45 @@ using System.Windows;
 
 namespace CodeBarProcAudit.Services
 {
-    internal static class CodeBarService
+    internal class CodeBarService
     {
-        public static void GeneratedBarcodeHtml(IEnumerable<Item> itemsCollection, string filePath)
+        public void GeneratedBarcodeHtml(IEnumerable<Item> itemsCollection, string filePath)
         {
-            List<string> barTags = new List<string>();
-
             if (itemsCollection != null && itemsCollection.Count() > 0)
             {
-                foreach (var item in itemsCollection)
-                {
-                    if (item != null && !string.IsNullOrEmpty(item.Inv))
-                    {
-                        var barCode = IronBarCode.BarcodeWriter.CreateBarcode(item.Inv, BarcodeEncoding.Code128).ResizeTo(50, 50).SetMargins(10);
-                        barCode.AddAnnotationTextAboveBarcode(item.Info1);
-                        barCode.AddBarcodeValueTextBelowBarcode();
-                        var bc = barCode.ToHtmlTag();
-
-                        barTags.Add(bc);
-                    }
-                }
-
-                var barText = string.Join("   ", barTags);
-
+                var barTags = PopulateBarTags(itemsCollection);
                 WriteBarcodeResult(barTags, filePath);
             }
             else
             {
-                MessageBox.Show("Данные не соответст");
+                MessageBox.Show("Отсутствует инвентаризационная база");
             }
         }
 
-        private static void WriteBarcodeResult(IEnumerable<string> barTags, string filePath)
+        private List<string> PopulateBarTags(IEnumerable<Item> itemsCollection)
+        {
+            var barTags = new List<string>();
+            foreach (var item in itemsCollection)
+            {
+                if (item != null && !string.IsNullOrEmpty(item.Inv))
+                {
+                    var barCode = CreateBarCode(item);
+                    barTags.Add(barCode);
+                }
+            }
+            return barTags;
+        }
+
+        private string CreateBarCode(Item item)
+        {
+            var barCode = BarcodeWriter.CreateBarcode(item.Inv, BarcodeEncoding.Code128).ResizeTo(50, 50).SetMargins(10);
+            barCode.AddAnnotationTextAboveBarcode(item.Info1);
+            barCode.AddBarcodeValueTextBelowBarcode();
+            var bc = barCode.ToHtmlTag();
+            return bc;
+        }
+
+        private void WriteBarcodeResult(IEnumerable<string> barTags, string filePath)
         {
             File.WriteAllLines(filePath, barTags);
         }

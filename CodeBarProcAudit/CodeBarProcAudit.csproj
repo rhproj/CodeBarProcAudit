@@ -8,11 +8,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ViewModels\DataGridTextSearch.cs" />
+    <Compile Remove="ViewModels\MainViewModel.cs" />
+    <Compile Remove="Views\MainWindow.xaml.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Img\barcode64.png" />
     <None Remove="Img\barcode98.png" />
     <None Remove="Img\broom48.png" />
     <None Remove="Img\openXLS.png" />
     <None Remove="Img\save64.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Remove="Views\MainWindow.xaml" />
   </ItemGroup>
 
   <ItemGroup>

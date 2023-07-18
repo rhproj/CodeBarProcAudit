@@ -5,18 +5,18 @@ namespace CodeBarProcAudit.Commands
 {
     internal class RelayCommand : ICommand
     {
-        private readonly Action<object> _Execute;
-        private readonly Func<object, bool> _CanExecute;
+        private readonly Action<object> _execute;
+        private readonly Func<object, bool> _canExecute;
 
         public RelayCommand(Action<object> Execute, Func<object, bool> CanExecute = null)
         {
-            _Execute = Execute ?? throw new ArgumentNullException(nameof(Execute));
-            _CanExecute = CanExecute;
+            _execute = Execute ?? throw new ArgumentNullException(nameof(Execute));
+            _canExecute = CanExecute;
         }
 
-        public bool CanExecute(object parameter) => _CanExecute?.Invoke(parameter) ?? true;
+        public bool CanExecute(object parameter) => _canExecute?.Invoke(parameter) ?? true;
 
-        public void Execute(object parameter) => _Execute(parameter);
+        public void Execute(object parameter) => _execute(parameter);
 
         public event EventHandler CanExecuteChanged
         {

@@ -7,7 +7,7 @@
         xmlns:vm="clr-namespace:CodeBarProcAudit.ViewModels"
         xmlns:converter="clr-namespace:CodeBarProcAudit.Converters"
         mc:Ignorable="d" FontSize="20"
-        Title="Прокуратура РТ: Инвентаризация" Height="550" Width="800">
+        Title="Инвентаризация" Height="550" Width="800">
     <Window.DataContext>
         <vm:MainViewModel/>
     </Window.DataContext>
